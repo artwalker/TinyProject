@@ -1,0 +1,16 @@
+[package]
+name = "greetings"
+version = "0.1.0"
+authors = ["Artwlker <xinxingwang@acm.org>"]
+edition = "2021"
+build = "build.rs"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+chrono = "0.4"
+rand = "0.8"
+
+[[bin]]
+name = "greetings"
+path = "src/greet.rs"
