@@ -1,6 +1,10 @@
-# Project Analysis and Usage Guide
+# Using and Understanding the Greetings C Program
+
+![](https://raw.githubusercontent.com/artwalker/PicGo/main/20240505235739.png)
 
 This project is based on the source code from the book "Tiny C Projects". The code for this project can be found on my GitHub at [Greetings](https://github.com/artwalker/TinyProject/tree/main/cprog/greetings).
+
+> Site: https://github.com/artwalker/TinyProject/tree/main/cprog/greetings
 
 There are also implementations of this project in other programming languages.
 
@@ -26,9 +30,10 @@ cd ~/bin && ./greeting Ethan && cd
 
 This will first switch to the `~/bin` directory, then run the `greetings` program.
 
-Note: This project assumes that you have installed a C compiler (such as clang) on your system. If you do not have a C compiler installed on your system, you need to install a C compiler to compile and run this project.
+>Note: This project assumes that you have installed a C compiler (such as clang) on your system. If you do not have a C compiler installed on your system, you need to install a C compiler to compile and run this project.
 
 ## Code Anylysis
+### tree
 ```bash
 ./cprog
 └── greetings
@@ -39,18 +44,7 @@ Note: This project assumes that you have installed a C compiler (such as clang) 
     ├── pithy.h
     └── pithy.txt
 ```
-```c
-#ifndef PITHY_H
-#define PITHY_H
-
-/**
- * Function to print a random saying from a file.
- * @param filename The name of the file containing the sayings.
- */
-void print_random_saying(const char *filename);
-
-#endif // PITHY_H
-```
+### greet.c
 ```c
 #include <stdio.h>
 #include <stdlib.h>
@@ -138,6 +132,20 @@ void print_random_saying(const char *filename)
 // 	return (0);
 // }
 ```
+### pithy.h
+```c
+#ifndef PITHY_H
+#define PITHY_H
+
+/**
+ * Function to print a random saying from a file.
+ * @param filename The name of the file containing the sayings.
+ */
+void print_random_saying(const char *filename);
+
+#endif // PITHY_H
+```
+### pithy.c
 ```c
 #include <stdio.h>
 #include <time.h>
@@ -217,6 +225,46 @@ int moon_phase(int year, int month, int day)
     return ((((e + d) * 6 + 5) % 177) / 22 & 7); // Calculate and return the phase of the moon
 }
 ```
+### Makefile
+```Makefile
+# Set the compiler to clang
+CC = clang
+# Set the compiler flags to enable all warnings and debugging information
+CFLAGS = -Wall -g
+# Set the target executable name
+TARGET = greetings
+# Set the name of the file containing the sayings
+FILE = pithy
+# Set the destination directory for the symbolic links
+DESTDIR = ~/bin
+
+# Default target
+all: $(TARGET) link
+
+# Link the object files to create the target executable
+$(TARGET): greet.o pithy.o
+    $(CC) $(CFLAGS) -o $(TARGET) greet.o pithy.o
+
+# Compile the greet.c source file into the greet.o object file
+greet.o: greet.c pithy.h
+    $(CC) $(CFLAGS) -c greet.c
+
+# Compile the pithy.c source file into the pithy.o object file
+pithy.o: pithy.c pithy.h
+    $(CC) $(CFLAGS) -c pithy.c
+
+# Create symbolic links to the target executable and the sayings file in the destination directory
+link:
+    ln -s $(PWD)/$(TARGET) $(DESTDIR)
+    ln -s $(PWD)/$(FILE).txt $(DESTDIR)
+
+# Remove the target executable, the object files, and the symbolic links
+clean:
+    rm -f $(TARGET) *.o
+    rm -f $(DESTDIR)/$(TARGET)
+    rm -f $(DESTDIR)/$(FILE).txt
+```
+### pithy.txt
 ```txt
 Politics exists so that uncoordinated people can play sports.
 Water alone doesn't get you clean. You must use soap. That's because dirt and crud loves soap and sticks to it really well. The water then washes away the soap, along with the dirt, and the result is that you are clean.
