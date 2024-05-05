@@ -17,7 +17,7 @@ The project uses a Makefile to automate the compilation and linking process. The
 4. **Configure .zshrc**: If you want to automatically run the `greetings` program when starting a new shell session, you can add the following line to the `.zshrc` file:
 
 ```bash
-cd ~/bin && ./greetings
+cd ~/bin && ./greeting Ethan && cd
 ```
 
 This will first switch to the `~/bin` directory, then run the `greetings` program.
