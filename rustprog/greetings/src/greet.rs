@@ -1,7 +1,21 @@
+// Import necessary modules
 use chrono::{Datelike, Local, Timelike};
 use std::env;
+
+// Import the pithy module
 mod pithy;
 
+/// Calculate the moon phase for a given date.
+///
+/// # Arguments
+///
+/// * `year` - The year of the date.
+/// * `month` - The month of the date.
+/// * `day` - The day of the date.
+///
+/// # Returns
+///
+/// * `usize` - The index of the moon phase.
 fn moon_phase(year: i32, month: u32, day: u32) -> usize {
     let mut d = day;
     if month == 2 {
@@ -18,6 +32,7 @@ fn moon_phase(year: i32, month: u32, day: u32) -> usize {
 }
 
 fn main() {
+    // Define the moon phases
     let phase = [
         "waxing crescent",
         "at first quarter",
@@ -29,15 +44,22 @@ fn main() {
         "new",
     ];
 
+    // Get the current date and time
     let now = Local::now();
+    // Calculate the moon phase for the current date
     let mp = moon_phase(now.year(), now.month(), now.day());
 
+    // Collect command line arguments
     let args: Vec<String> = env::args().collect();
+    // If there is a command line argument, print a personalized greeting
     if args.len() > 1 {
+        //println!("args[0]: {}", args[0]);
         println!("Greetings, {}!", args[1]);
     } else {
+        // Otherwise, print a generic greeting
         println!("Greetings!");
     }
+    // Print the current date and time
     println!(
         "Today is {}, {}, {}, {}\nIt is {}:{}:{}",
         now.weekday(),
@@ -48,6 +70,7 @@ fn main() {
         now.minute(),
         now.second()
     );
+    // Print the current moon phase
     println!("The moon is {}", phase[mp]);
 
     // Call the function from pithy
