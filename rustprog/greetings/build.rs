@@ -3,11 +3,14 @@ use std::fs;
 use std::os::unix::fs::symlink;
 use std::path::Path;
 
+// This is the main function that will be executed when the build script is run.
 fn main() {
-    // 获取当前的工作目录
+    // Get the current working directory
+    // OUT_DIR is a directory path that cargo has set aside for build scripts to place their output.
     let out_dir = env::var("OUT_DIR").unwrap();
 
-    // 构建源文件和目标文件的路径
+    // Build the paths for the source and destination files
+    // The source executable path is constructed by navigating up three directories from OUT_DIR and appending "greetings".
     let src_exe_path = Path::new(&out_dir)
         .parent()
         .unwrap()
@@ -16,21 +19,26 @@ fn main() {
         .parent()
         .unwrap()
         .join("greetings");
+    // The destination executable path is constructed by appending "bin/greetings" to the HOME directory.
     let dst_exe_path = Path::new(&env::var("HOME").unwrap())
         .join("bin")
         .join("greetings");
 
-    // 构建源文件和目标文件的路径
+    // Build the paths for the source and destination files
+    // The source text file path is constructed by appending "src/pithy.txt" to the CARGO_MANIFEST_DIR directory.
     let src_txt_path = Path::new(&env::var("CARGO_MANIFEST_DIR").unwrap())
         .join("src")
         .join("pithy.txt");
+    // The destination text file path is constructed by appending "bin/pithy.txt" to the HOME directory.
     let dst_txt_path = Path::new(&env::var("HOME").unwrap())
         .join("bin")
         .join("pithy.txt");
 
-    // 检查是否正在运行cargo clean命令
+    // Check if the cargo clean command is being run
+    // If CARGO_CLEAN is set to "1", it means the cargo clean command is being run.
     if env::var("CARGO_CLEAN").unwrap_or_default() == "1" {
-        // 删除符号链接
+        // Remove the symbolic links
+        // If the symbolic links cannot be removed, an error message is printed to the standard error.
         fs::remove_file(&dst_exe_path).unwrap_or_else(|err| {
             eprintln!("Failed to remove symlink {:?}: {}", dst_exe_path, err)
         });
@@ -38,11 +46,13 @@ fn main() {
             eprintln!("Failed to remove symlink {:?}: {}", dst_txt_path, err)
         });
     } else {
-        // 删除旧的符号链接
+        // Remove the old symbolic links
+        // If the old symbolic links cannot be removed, the error is ignored.
         let _ = fs::remove_file(&dst_exe_path);
         let _ = fs::remove_file(&dst_txt_path);
 
-        // 创建新的符号链接
+        // Create new symbolic links
+        // If the new symbolic links cannot be created, the program will panic and print an error message.
         symlink(&src_exe_path, &dst_exe_path).unwrap_or_else(|err| {
             panic!(
                 "Failed to create symlink from {:?} to {:?}: {}",
