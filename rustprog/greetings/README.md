@@ -1,5 +1,7 @@
 # Using and Understanding the Greetings Rust Program
 
+![](https://raw.githubusercontent.com/artwalker/PicGo/main/20240505235739.png)
+
 This project is based on the source code from the book "Tiny C Projects". The code for this project can be found on my GitHub at Greetings.
 > Site: https://github.com/artwalker/TinyProject/tree/main/rustprog/greetings  
 
