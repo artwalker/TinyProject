@@ -2,6 +2,7 @@ use std::env;
 use std::fs;
 use std::os::unix::fs::symlink;
 use std::path::Path;
+use std::fs::copy;
 
 // This is the main function that will be executed when the build script is run.
 fn main() {
@@ -29,6 +30,7 @@ fn main() {
     let src_txt_path = Path::new(&env::var("CARGO_MANIFEST_DIR").unwrap())
         .join("src")
         .join("pithy.txt");
+    
     // The destination text file path is constructed by appending "bin/pithy.txt" to the HOME directory.
     let dst_txt_path = Path::new(&env::var("HOME").unwrap())
         .join("bin")
@@ -65,5 +67,23 @@ fn main() {
                 src_txt_path, dst_txt_path, err
             )
         });
-    }
+
+        // Create a new path for the destination file in the release directory
+        let dst_txt_release = Path::new(&out_dir)
+                    .parent() // Navigate up one directory level
+                    .unwrap() // Unwrap the Result
+                    .parent() // Navigate up another directory level
+                    .unwrap() // Unwrap the Result
+                    .parent() // Navigate up yet another directory level
+                    .unwrap() // Unwrap the Result
+                    .join(src_txt_path.file_name().unwrap()); // Join the source file name to the path
+
+        // Copy the file
+        copy(&src_txt_path, &dst_txt_release).unwrap_or_else(|err| {
+            // If the copy operation fails, panic and display an error message
+            panic!(
+                "Failed to copy file from {:?} to {:?}: {}",
+                src_txt_path, dst_txt_release, err
+            )
+        });
 }

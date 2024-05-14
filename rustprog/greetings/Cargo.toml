@@ -1,16 +1,25 @@
 [package]
+# The name of the package
 name = "greetings"
+# The version of the package
 version = "0.1.0"
+# The authors of the package
 authors = ["Artwlker <xinxingwang@acm.org>"]
+# The edition of Rust to use
 edition = "2021"
+# The build script to run before compiling the package
 build = "build.rs"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+# The chrono crate for working with dates and times
 chrono = "0.4"
+# The rand crate for generating random numbers
 rand = "0.8"
 
 [[bin]]
+# The name of the binary to produce
 name = "greetings"
+# The path to the source file for the binary
 path = "src/greet.rs"
