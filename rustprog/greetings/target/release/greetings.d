@@ -1,1 +1,0 @@
-/home/xinxingwang/TinyProject/rustprog/greetings/target/release/greetings: /home/xinxingwang/TinyProject/rustprog/greetings/build.rs /home/xinxingwang/TinyProject/rustprog/greetings/src/greet.rs /home/xinxingwang/TinyProject/rustprog/greetings/src/pithy.rs

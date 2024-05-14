@@ -86,4 +86,5 @@ fn main() {
                 src_txt_path, dst_txt_release, err
             )
         });
+    }
 }
