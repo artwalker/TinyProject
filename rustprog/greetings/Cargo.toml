@@ -17,6 +17,8 @@ build = "build.rs"
 chrono = "0.4"
 # The rand crate for generating random numbers
 rand = "0.8"
+# The dirs crate for locating the file 
+dirs = "4.0"
 
 [[bin]]
 # The name of the binary to produce

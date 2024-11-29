@@ -1,6 +1,7 @@
 // Import necessary modules
 use chrono::{Datelike, Local, Timelike};
 use std::env;
+use dirs;
 
 // Import the pithy module
 mod pithy;
@@ -74,5 +75,7 @@ fn main() {
     println!("The moon is {}", phase[mp]);
 
     // Call the function from pithy
-    pithy::print_random_saying("pithy.txt").unwrap();
+    let home_dir = dirs::home_dir().expect("Could not find home directory");
+    let pithy_path = home_dir.join("bin/pithy.txt");
+    pithy::print_random_saying(pithy_path.to_str().unwrap()).unwrap();
 }
