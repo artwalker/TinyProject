@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <ctype.h>
+#include <string.h>
 
-int main(int argc, char *argv[])
+char isterm(char *term)
 {
 	const char *nato[] = {
 		"Alfa", "Bravo", "Charlie", "Delta", "Echo", "Foxtrot",
@@ -11,8 +11,32 @@ int main(int argc, char *argv[])
 		"Sierra", "Tango", "Uniform", "Victor", "Whiskey",
 		"Xray", "Yankee", "Zulu"
 	};
+	int x;
+	const char *n;
+	char *t;
+
+	for( x=0; x<26; x++)
+	{
+		n = nato[x];
+		t = term;
+		while( *n!='\0' )
+		{
+			if( (*n|0x20)!=(*t|0x20) )
+				break;
+			n++;
+			t++;
+		}
+		if( *n=='\0' )
+			return( *nato[x] );
+	}
+	return('\0');
+}
+
+int main(int argc, char *argv[])
+{
 	FILE *n;
-	int ch;
+	char phrase[64];
+	char *match,ch;
 
 	if( argc<2 )
 	{
@@ -27,10 +51,16 @@ int main(int argc, char *argv[])
 		exit(1);
 	}
 
-	while( (ch=fgetc(n))!=EOF ) 
+	while( !feof(n) )
 	{
-		if(isalpha(ch))
-			printf("%s ",nato[toupper(ch)-'A']);
+		fgets(phrase,64,n);
+		match = strtok(phrase," ,.!?=()[]{}'\"");
+		while(match)
+		{
+			if( (ch=isterm(match))!='\0' )
+				putchar(ch);
+			match = strtok(NULL," ,.!?=()[]{}'\"");
+		}
 	}
 	putchar('\n');
 

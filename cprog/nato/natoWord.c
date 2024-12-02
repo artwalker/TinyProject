@@ -1,8 +1,7 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <ctype.h>
 
-int main(int argc, char *argv[])
+int main()
 {
 	const char *nato[] = {
 		"Alfa", "Bravo", "Charlie", "Delta", "Echo", "Foxtrot",
@@ -11,30 +10,24 @@ int main(int argc, char *argv[])
 		"Sierra", "Tango", "Uniform", "Victor", "Whiskey",
 		"Xray", "Yankee", "Zulu"
 	};
-	FILE *n;
-	int ch;
+	char phrase[64];
+	char ch;
+	int i;
 
-	if( argc<2 )
-	{
-		fprintf(stderr,"Please supply a text file argument\n");
-		exit(1);
-	}
+	printf("Enter a word or phrase: ");
+	fgets(phrase,64,stdin);
 
-	n = fopen(argv[1],"r");
-	if( n==NULL )
+	i = 0;
+	while(phrase[i])
 	{
-		fprintf(stderr,"Unable to open '%s'\n",argv[1]);
-		exit(1);
-	}
-
-	while( (ch=fgetc(n))!=EOF ) 
-	{
+		ch = toupper(phrase[i]);
 		if(isalpha(ch))
-			printf("%s ",nato[toupper(ch)-'A']);
+			printf("%s ",nato[ch-'A']);
+		i++;
+		if( i==64 )
+			break;
 	}
 	putchar('\n');
-
-	fclose(n);
 
 	return(0);
 }
