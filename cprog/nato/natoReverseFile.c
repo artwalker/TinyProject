@@ -19,9 +19,10 @@ char isterm(char *term)
 	{
 		n = nato[x];
 		t = term;
+		// every sting will end with '\0'
 		while( *n!='\0' )
 		{
-			if( (*n|0x20)!=(*t|0x20) )
+			if( (*n|0x20)!=(*t|0x20) ) // convert to lowercase
 				break;
 			n++;
 			t++;
